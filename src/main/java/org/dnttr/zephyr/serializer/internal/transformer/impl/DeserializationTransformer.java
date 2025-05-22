@@ -4,6 +4,7 @@ import org.dnttr.zephyr.serializer.exceptions.UnsupportedTypeException;
 import org.dnttr.zephyr.serializer.internal.transformer.ITransformer;
 import org.dnttr.zephyr.toolset.exceptions.InvalidLengthException;
 import org.dnttr.zephyr.toolset.types.Type;
+import org.jetbrains.annotations.NotNull;
 
 import static org.dnttr.zephyr.toolset.operators.BooleanOperator.getBooleanArrayFromBytes;
 import static org.dnttr.zephyr.toolset.operators.CharOperator.getCharArrayFromBytes;
@@ -25,11 +26,7 @@ import static org.dnttr.zephyr.toolset.operators.StringOperator.getStringArrayFr
 public final class DeserializationTransformer implements ITransformer<byte[], Object> {
 
     @Override
-    public Object transform(Type type, boolean isArray, byte[] input) throws Exception {
-        if (type == null) {
-            throw new UnsupportedTypeException("Provided type is unsupported/null");
-        }
-
+    public Object transform(@NotNull Type type, boolean isArray, byte[] input) throws Exception {
         if (input.length == 0) {
             throw new InvalidLengthException("The byte array is empty");
         }

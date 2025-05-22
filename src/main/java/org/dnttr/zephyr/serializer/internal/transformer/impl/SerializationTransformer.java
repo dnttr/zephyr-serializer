@@ -4,6 +4,7 @@ import org.dnttr.zephyr.serializer.exceptions.UnsupportedTypeException;
 import org.dnttr.zephyr.serializer.internal.transformer.ITransformer;
 import org.dnttr.zephyr.toolset.operators.ByteOperator;
 import org.dnttr.zephyr.toolset.types.Type;
+import org.jetbrains.annotations.NotNull;
 
 import static org.dnttr.zephyr.toolset.operators.BooleanOperator.getBytesFromBooleanArray;
 import static org.dnttr.zephyr.toolset.operators.CharOperator.getBytesFromCharArray;
@@ -26,11 +27,7 @@ import static org.dnttr.zephyr.toolset.operators.StringOperator.getBytesFromStri
 public final class SerializationTransformer implements ITransformer<Object, byte[]> {
 
     @Override
-    public byte[] transform(Type type, boolean isArray, Object input) throws Exception {
-        if (type == null) {
-            throw new UnsupportedTypeException("Provided type is unsupported/null");
-        }
-
+    public byte[] transform(@NotNull Type type, boolean isArray, Object input) throws Exception {
         return isArray ?  this.getArrayObject(type, input) : this.getSingularObject(type, input);
     }
 
