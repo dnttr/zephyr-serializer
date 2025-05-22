@@ -37,7 +37,7 @@ public class CompositeObjectCodec {
     private final SerializationTransformer serializationTransformer = new SerializationTransformer();
 
     public Object read(Class<?> klass, ByteBuf buffer) throws Exception {
-        List<String> addresses = new ArrayList<>();
+        var addresses = new ArrayList<>();
 
         if (buffer.readableBytes() < 4) {
             throw new InvalidLengthException("Buffer underflow. (expect at least 4, got " + buffer.readableBytes() + ")");
@@ -49,7 +49,7 @@ public class CompositeObjectCodec {
             throw new InvalidLengthException("The fields size cannot be negative.");
         }
 
-        Constructor<?> constructor = Reflection.getConstructor(klass, 0);
+        var constructor = Reflection.getConstructor(klass, 0);
 
         int parameterCount = constructor.getParameterCount();
 
@@ -57,16 +57,20 @@ public class CompositeObjectCodec {
             throw new InvalidLengthException(0, parameterCount);
         }
 
-        List<Field> fields = Reflection.getFields(klass, Map.class, true).toList();
+        var fields = Reflection.getFields(klass, Map.class, true).toList();
         if (fields.size() != size) {
             throw new InvalidLengthException(size, fields.size(), false);
         }
 
         Object instance = Reflection.newInstance(constructor, new Object[0]);
 
+        if (instance == null) {
+            throw new IllegalStateException("The instance cannot be null.");
+        }
+
         for (int i = 0; i < size; i++) {
             if (buffer.readableBytes() < 4) {
-                throw new Exception("Buffer underflow. (expect at least 4, got " + buffer.readableBytes() + ")");
+                throw new InvalidLengthException("Buffer underflow. (expect at least 4, got " + buffer.readableBytes() + ")");
             }
 
             int length = buffer.readInt();
@@ -83,7 +87,7 @@ public class CompositeObjectCodec {
                 throw new DuplicateAddressException("Duplicate keys found." + address);
             }
 
-            Optional<Field> optionalField = fields.stream().filter(f -> f.getDeclaredAnnotation(Map.class).address().equalsIgnoreCase(address)).findFirst();
+            var optionalField = fields.stream().filter(f -> f.getDeclaredAnnotation(Map.class).address().equalsIgnoreCase(address)).findFirst();
 
             if (optionalField.isPresent()) {
                 Field field = optionalField.get();
@@ -126,7 +130,7 @@ public class CompositeObjectCodec {
     }
 
     private List<FieldDescriptor> getDescriptors(Class<?> klass, Object instance) throws Exception {
-        Stream<Field> fields = Reflection.getFields(klass, Map.class, true).filter(field ->
+        var fields = Reflection.getFields(klass, Map.class, true).filter(field ->
                 Reflection.isRegularField(field) && !Modifier.isFinal(field.getModifiers()));
 
         List<FieldDescriptor> descriptors = new ArrayList<>();
