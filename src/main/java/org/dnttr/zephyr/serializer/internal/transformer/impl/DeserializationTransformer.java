@@ -18,6 +18,10 @@ import static org.dnttr.zephyr.toolset.operators.ShortOperator.getShortArrayFrom
 import static org.dnttr.zephyr.toolset.operators.ShortOperator.getShortFromBytes;
 import static org.dnttr.zephyr.toolset.operators.StringOperator.getStringArrayFromBytes;
 
+/**
+ * @author dnttr
+ */
+
 public final class DeserializationTransformer implements ITransformer<byte[], Object> {
 
     @Override
