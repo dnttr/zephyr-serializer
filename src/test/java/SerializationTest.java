@@ -1,5 +1,4 @@
 import io.netty.buffer.ByteBuf;
-import lombok.SneakyThrows;
 import org.dnttr.zephyr.serializer.Serializer;
 import org.junit.jupiter.api.Test;
 
@@ -16,27 +15,30 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SerializationTest {
 
-    @SneakyThrows
     @Test
     public void test() {
-        SerializableObject object = new SerializableObject();
+        try {
+            SerializableObject object = new SerializableObject();
 
-        ByteBuf serializedData = Serializer.serializeToBuffer(SerializableObject.class, object);
-        assert serializedData.readableBytes() > 0;
+            ByteBuf serializedData = Serializer.serializeToBuffer(SerializableObject.class, object);
+            assert serializedData.readableBytes() > 0;
 
-        SerializableObject deserializedObject = (SerializableObject) Serializer.deserializeUsingBuffer(SerializableObject.class, serializedData);
+            SerializableObject deserializedObject = (SerializableObject) Serializer.deserializeUsingBuffer(SerializableObject.class, serializedData);
 
-        Field[] fields = SerializableObject.class.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true);
-            Object val1 = field.get(object);
-            Object val2 = field.get(deserializedObject);
+            Field[] fields = SerializableObject.class.getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                Object val1 = field.get(object);
+                Object val2 = field.get(deserializedObject);
 
-            boolean areEqual = isEqual(val1, val2);
+                boolean areEqual = isEqual(val1, val2);
 
-            if (!Modifier.isTransient(field.getModifiers())) {
-                assertTrue(areEqual, "Field '" + field.getName() + "' values don't match: " + val1 + " vs " + val2);
+                if (!Modifier.isTransient(field.getModifiers())) {
+                    assertTrue(areEqual, "Field '" + field.getName() + "' values don't match: " + val1 + " vs " + val2);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

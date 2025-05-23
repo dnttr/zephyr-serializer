@@ -8,6 +8,5 @@ import org.dnttr.zephyr.toolset.types.Type;
 
 public interface ITransformer<I, O> {
 
-
     O transform(Type type, boolean isArray, I input) throws Exception;
 }
