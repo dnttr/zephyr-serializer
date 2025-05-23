@@ -16,14 +16,11 @@ import org.dnttr.zephyr.toolset.reflection.Reflection;
 import org.dnttr.zephyr.toolset.types.Type;
 import org.dnttr.zephyr.toolset.types.TypeMatch;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * @author dnttr
