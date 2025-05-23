@@ -1,6 +1,5 @@
 package org.dnttr.zephyr.serializer.internal.transformer.impl;
 
-import org.dnttr.zephyr.serializer.exceptions.UnsupportedTypeException;
 import org.dnttr.zephyr.serializer.internal.transformer.ITransformer;
 import org.dnttr.zephyr.toolset.exceptions.InvalidLengthException;
 import org.dnttr.zephyr.toolset.types.Type;
@@ -12,6 +11,7 @@ import static org.dnttr.zephyr.toolset.operators.DoubleOperator.getDoubleArrayFr
 import static org.dnttr.zephyr.toolset.operators.DoubleOperator.getDoubleFromBytes;
 import static org.dnttr.zephyr.toolset.operators.FloatOperator.getFloatArrayFromBytes;
 import static org.dnttr.zephyr.toolset.operators.FloatOperator.getFloatFromBytes;
+import static org.dnttr.zephyr.toolset.operators.IntegerOperator.getIntegerArrayFromBytes;
 import static org.dnttr.zephyr.toolset.operators.IntegerOperator.getIntegerFromBytes;
 import static org.dnttr.zephyr.toolset.operators.LongOperator.getLongArrayFromBytes;
 import static org.dnttr.zephyr.toolset.operators.LongOperator.getLongFromBytes;
@@ -37,7 +37,7 @@ public final class DeserializationTransformer implements ITransformer<byte[], Ob
     private Object getArrayObject(Type type, byte[] bytes) throws InvalidLengthException {
         return switch (type) {
             case BYTE -> bytes;
-            case INT -> getIntegerFromBytes(bytes);
+            case INT -> getIntegerArrayFromBytes(bytes);
             case STRING -> getStringArrayFromBytes(bytes);
             case LONG -> getLongArrayFromBytes(bytes);
             case SHORT -> getShortArrayFromBytes(bytes);

@@ -4,9 +4,13 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
 import lombok.AllArgsConstructor;
+import org.dnttr.zephyr.serializer.exceptions.IllegalModifierException;
 import org.dnttr.zephyr.serializer.internal.descriptors.FieldDescriptor;
+import org.dnttr.zephyr.toolset.types.Type;
 import org.dnttr.zephyr.toolset.types.TypeMatch;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 import static org.dnttr.zephyr.toolset.types.Type.*;
 
@@ -38,7 +42,13 @@ public class AtomicFieldCodec {
                     byte[] addressBytes = ByteBufUtil.getBytes(buffer.readBytes(addressLength));
                     byte[] objectBytes = ByteBufUtil.getBytes(buffer.readBytes(objectLength));
 
-                    return new FieldDescriptor(identity, TypeMatch.getType(identity), addressBytes, objectBytes, isNull, isArray);
+                    Optional<Type> type = TypeMatch.getType(identity);
+
+                    if (type.isEmpty()) {
+                        throw new IllegalModifierException(String.format("Type %s not found", identity));
+                    }
+
+                    return new FieldDescriptor(identity, type.get(), addressBytes, objectBytes, isNull, isArray);
                 }
             }
         } catch (Exception ex) {

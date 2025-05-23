@@ -21,6 +21,7 @@ import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author dnttr
@@ -134,7 +135,11 @@ public class CompositeObjectCodec {
 
         for (Field field : fields.toList()) {
             int identity = TypeMatch.getModifier(field);
-            Type type = TypeMatch.getType(identity);
+            Optional<Type> type = TypeMatch.getType(identity);
+
+            if (type.isEmpty()) {
+                throw new IllegalModifierException(String.format("Type %s not found", identity));
+            }
 
             String address = field.getDeclaredAnnotation(Map.class).address();
             byte[] addressBytes = address.getBytes(StandardCharsets.UTF_8);
@@ -147,10 +152,10 @@ public class CompositeObjectCodec {
             byte[] objectBytes = new byte[0];
 
             if (!isNull) {
-                objectBytes = this.serializationTransformer.transform(type, isArray, object);
+                objectBytes = this.serializationTransformer.transform(type.orElse(null), isArray, object);
             }
 
-            var descriptor = new FieldDescriptor(identity, TypeMatch.getType(identity), addressBytes, objectBytes, isNull, isArray);
+            var descriptor = new FieldDescriptor(identity, type.get(), addressBytes, objectBytes, isNull, isArray);
             descriptors.add(descriptor);
         }
 
