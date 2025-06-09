@@ -17,7 +17,6 @@ import org.dnttr.zephyr.toolset.types.Type;
 import org.dnttr.zephyr.toolset.types.TypeMatch;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,8 +123,7 @@ public class CompositeObjectCodec {
     }
 
     private List<FieldDescriptor> getDescriptors(Class<?> klass, Object instance) throws Exception {
-        var fields = Reflection.getFields(klass, Map.class, true).filter(field ->
-                Reflection.isRegularField(field) && !Modifier.isFinal(field.getModifiers()));
+        var fields = Reflection.getFields(klass, Map.class, true).filter(Reflection::isRegularField);
 
         List<FieldDescriptor> descriptors = new ArrayList<>();
 
