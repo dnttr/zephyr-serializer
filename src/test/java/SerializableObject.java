@@ -56,7 +56,7 @@ public class SerializableObject {
     @Map(address = "o")
     public boolean[] o = { true, false };
 
-    @Map(address = "p")
+    @Map(address = "pxe")
     public String[] p = { "hello", "world" };
     
     public transient String tA = "transient";

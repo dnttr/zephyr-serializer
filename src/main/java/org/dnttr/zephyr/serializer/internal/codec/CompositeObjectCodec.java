@@ -90,10 +90,6 @@ public class CompositeObjectCodec {
             if (optionalField.isPresent()) {
                 Field field = optionalField.get();
 
-                if (Modifier.isFinal(field.getModifiers())) {
-                    throw new IllegalModifierException("Final modifier isn't allowed.");
-                }
-
                 field.setAccessible(true);
                 field.set(instance, object);
             } else {
