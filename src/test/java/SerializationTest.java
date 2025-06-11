@@ -1,4 +1,5 @@
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import org.dnttr.zephyr.serializer.Serializer;
 import org.junit.jupiter.api.Test;
 
@@ -18,9 +19,10 @@ public class SerializationTest {
     @Test
     public void test() {
         try {
-            SerializableObject object = new SerializableObject();
+            SerializableObject object = new SerializableObject(2);
 
             ByteBuf serializedData = Serializer.serializeToBuffer(SerializableObject.class, object);
+            System.out.println(Arrays.toString(ByteBufUtil.getBytes(serializedData)));
             assert serializedData.readableBytes() > 0;
 
             SerializableObject deserializedObject = (SerializableObject) Serializer.deserializeUsingBuffer(SerializableObject.class, serializedData);

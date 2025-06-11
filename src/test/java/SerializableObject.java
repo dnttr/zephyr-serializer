@@ -1,4 +1,4 @@
-import org.dnttr.zephyr.serializer.annotations.Map;
+import org.dnttr.zephyr.serializer.annotations.Address;
 import org.dnttr.zephyr.serializer.annotations.Serializable;
 
 /**
@@ -8,56 +8,60 @@ import org.dnttr.zephyr.serializer.annotations.Serializable;
 @Serializable
 public class SerializableObject {
 
-    @Map(address = "a")
+    @Address(address = "a")
     public byte a = 127;
     
-    @Map(address = "b")
+    @Address(address = "b")
     public short b = -128;
 
-    @Map(address = "c")
+    @Address(address = "c")
     public char c = 'c';
     
-    @Map(address = "d")
-    public int d = -32768;
+    @Address(address = "d")
+    public final int d;
     
-    @Map(address = "e")
+    @Address(address = "e")
     public long e = -9223372036854775807L;
     
-    @Map(address = "f")
+    @Address(address = "f")
     public float f = -1.0F;
     
-    @Map(address = "g")
+    @Address(address = "g")
     public double g = -1.0D;
     
-    @Map(address = "h")
+    @Address(address = "h")
     public String h = "hello";
 
-    @Map(address = "ix")
+    @Address(address = "ix")
     public boolean ix = true;
     
-    @Map(address = "i")
+    @Address(address = "i")
     public byte[] i = { -127, 34, 21, 127 };
     
-    @Map(address = "j")
+    @Address(address = "j")
     public short[] j = { -23444, 5438, 19299 };
     
-    @Map(address = "k")
+    @Address(address = "k")
     public int[] k = { -56945432, 1243, 42834828 };
     
-    @Map(address = "l")
+    @Address(address = "l")
     public long[] l = { 1273485879348795L, 435349085938L };
 
-    @Map(address = "m")
+    @Address(address = "m")
     public float[] m = { 127.34509F, 127989874.3F, 0.0F, 6.99214843F };
 
-    @Map(address = "n")
+    @Address(address = "n")
     public double[] n = { 1278584.823488902D, 289892.333D, 0.0D, 692269.D };
 
-    @Map(address = "o")
+    @Address(address = "o")
     public boolean[] o = { true, false };
 
-    @Map(address = "pxe")
+    @Address(address = "pxe")
     public String[] p = { "hello", "world" };
     
     public transient String tA = "transient";
+
+    public SerializableObject(@Address(address = "d") int d) {
+        this.d = d;
+    }
 }
